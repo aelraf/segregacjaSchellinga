@@ -79,19 +79,33 @@ def rysuj():
 
 
 def start():
+    """
+    W pojedyńczej iteracji:
+     1) sprawdzamy, czy dany rezydent jest zadowolony
+     2) tworzymy tablicę zadowolenia rezydentów
+     3) dla niezadowolonych rezydentów przenosimy każdego z nich na dowolne wolne miejsce (losowe)
+    Kończymy, jeśli wszyscy są zadowoleni.
+    Wypisujemy na ekranie bierzącą wartość zadowolenia oraz numer iteracji.
+    """
     global loop, lista_niezadowolonych
+
     zadowolony = 0
     niezadowolony = 0
+    iteracja = 0
     while loop:
         for x in range(100):
             for y in range(100):
                 resident = listaRezydentow[x][y]
-                print(resident)
+            #    print(resident)
                 if czy_zadowolony(x, y):
                     zadowolony += 1
+                    lista_niezadowolonych[x][y] = 1
                 else:
                     niezadowolony += 1
+                    lista_niezadowolonych[x][y] = 0
         print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
+        iteracja += 1
+
         loop = False
     print("koniec metody start()")
 
@@ -123,7 +137,7 @@ def losuj():
                 listaRezydentow[i][j] = 1
             else:
                 listaRezydentow[i][j] = 2
-    print(listaRezydentow)
+#    print(listaRezydentow)
     rysuj()
 
 
