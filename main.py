@@ -21,6 +21,8 @@
 import pygame
 import random
 
+import Przycisk
+import SuperPixel
 
 pygame.init()
 resolution  = (800, 600)
@@ -34,6 +36,10 @@ zadowolenie = 0.5
 def koniec():
     global run
     run = False
+
+
+def rysuj():
+    pass
 
 
 def start():
@@ -52,9 +58,26 @@ def main():
     """
 
     """
+    global run, listaSuperpixeli
+    clock = 0
     buttonsTab = []
+    p1 = Przycisk.Przycisk(700, 40, "buttons/start")
+    buttonsTab.append(p1)
+
+    x = 10
+    y = 10
+
+    for i in range(100):
+        for j in range(100):
+            s_p = SuperPixel.SuperPixel(x, y)
+            x += 5
+            listaSuperpixeli.append(s_p)
+        x = 10
+        y += 5
 
     while run:
+        clock += pygame.time.Clock().tick(60)/1000
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -63,9 +86,21 @@ def main():
                     if p.klikPrzycisk():
                         if p.nazwa == "koniec":
                             koniec()
+                        elif p.nazwa == "start":
+                            start()
+                        elif p.nazwa == "losuj":
+                            losuj()
+                        elif p.nazwa == "stop":
+                            stop()
 
+    window.fill((60, 25, 60))
     for p in listaSuperpixeli:
         p.draw(window)
+
+    for p in buttonsTab:
+        p.draw(window)
+
+    pygame.display.update()
 
 
 if __name__ == '__main__':
