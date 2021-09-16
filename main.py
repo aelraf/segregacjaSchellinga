@@ -31,6 +31,7 @@ window = pygame.display.set_mode(resolution)
 run = True
 listaRezydentow = []
 listaSuperpixeli = []
+lista_niezadowolonych = []
 zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
@@ -39,6 +40,7 @@ loop = True
 
 def koniec():
     global run
+
     run = False
 
 
@@ -50,11 +52,12 @@ def czy_zadowolony(x, y):
     """
     l_diff = 0
     if x - 1 >0 and y - 1 > 0 and x + 1 < 100 and y + 1 < 100:
-        for u in range(x-1, x+1):
-            for v in range(y-1, y+1):
+        for u in range(x-1, x+2):
+            for v in range(y-1, y+2):
                 if listaRezydentow[x][y] != listaRezydentow[u][v] and listaRezydentow[u][v] != 0:
                     l_diff += 1
     if l_diff/8.0 < zadowolenie:
+    #    print("wartość: {}".format(l_diff/8.0))
         return False
     else:
         return True
@@ -76,13 +79,26 @@ def rysuj():
 
 
 def start():
-    global loop
+    global loop, lista_niezadowolonych
+    zadowolony = 0
+    niezadowolony = 0
     while loop:
-        pass
+        for x in range(100):
+            for y in range(100):
+                resident = listaRezydentow[x][y]
+                print(resident)
+                if czy_zadowolony(x, y):
+                    zadowolony += 1
+                else:
+                    niezadowolony += 1
+        print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
+        loop = False
+    print("koniec metody start()")
 
 
 def stop():
     global loop
+
     loop = False
 
 
@@ -96,6 +112,7 @@ def losuj():
     :return:
     """
     global listaRezydentow
+
     print("losuj()")
     for i in range(100):
         for j in range(100):
@@ -115,16 +132,17 @@ def main():
 
     """
     global run, listaSuperpixeli, listaRezydentow
+
     clock = 0
-    buttonsTab = []
+    buttons_tab = []
     p1 = Przycisk.Przycisk(700, 40, "buttons/start")
-    buttonsTab.append(p1)
+    buttons_tab.append(p1)
     p2 = Przycisk.Przycisk(700, 80, "buttons/losuj")
-    buttonsTab.append(p2)
+    buttons_tab.append(p2)
     p3 = Przycisk.Przycisk(700, 120, "buttons/stop")
-    buttonsTab.append(p3)
+    buttons_tab.append(p3)
     p4 = Przycisk.Przycisk(700, 160, "buttons/koniec")
-    buttonsTab.append(p4)
+    buttons_tab.append(p4)
 
     x = 10
     y = 10
@@ -139,7 +157,7 @@ def main():
 
     n = 100
     m = 100
-    listaRezydentow = [[0] * m for i in range(n)]
+    listaRezydentow = [[0] * m for _ in range(n)]
 
     while run:
         clock += pygame.time.Clock().tick(60)/1000
@@ -148,7 +166,7 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                for p in buttonsTab:
+                for p in buttons_tab:
                     if p.klikPrzycisk():
                         if p.nazwa == "koniec":
                             koniec()
@@ -163,7 +181,7 @@ def main():
         for p in listaSuperpixeli:
             p.draw(window)
 
-        for p in buttonsTab:
+        for p in buttons_tab:
             p.draw(window)
 
         pygame.display.update()
