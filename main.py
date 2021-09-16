@@ -31,6 +31,8 @@ run = True
 listaRezydentow = []
 listaSuperpixeli = []
 zadowolenie = 0.5
+krok = 0
+procent_zadowolonych = 0.0
 
 
 def koniec():
@@ -51,8 +53,26 @@ def stop():
 
 
 def losuj():
-    pass
-
+    """
+    dla listy rezydentów losuje, czy w danym miejscu będzie przedstawiciel pierwszej czy drugiej populacji,
+    czy też wolne miejsce
+    1 - pierwsza populacja
+    2 - druga populacja
+    0 - wolne miejsce
+    :return:
+    """
+    global listaRezydentow
+    for i in range(100):
+        for j in range(100):
+            los = random.random()
+            if los < 1.0/3.0:
+                listaRezydentow[i][j] = 0
+            elif 1.0/3.0 < los < 2.0/3.0:
+                listaRezydentow[i][j] = 1
+            else:
+                listaRezydentow[i][j] = 2
+    rysuj()
+    
 
 def main():
     """
