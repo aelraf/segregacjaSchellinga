@@ -41,7 +41,14 @@ def koniec():
 
 
 def rysuj():
-    pass
+    i = 0
+    for p in listaRezydentow:
+        if p == 0:
+            listaSuperpixeli[i].zmianaKoloru(255, 255, 255)
+        elif p == 1:
+            listaSuperpixeli[i].zmianaKoloru(255, 0, 0)
+        elif p == 2:
+            listaSuperpixeli[i].zmianaKoloru(0, 0, 255)
 
 
 def start():
@@ -72,7 +79,7 @@ def losuj():
             else:
                 listaRezydentow[i][j] = 2
     rysuj()
-    
+
 
 def main():
     """
@@ -94,6 +101,10 @@ def main():
             listaSuperpixeli.append(s_p)
         x = 10
         y += 5
+
+    n = 100
+    m = 100
+    listaRezydentow = [[0] * m for i in range(n)]
 
     while run:
         clock += pygame.time.Clock().tick(60)/1000
