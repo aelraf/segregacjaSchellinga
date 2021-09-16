@@ -18,6 +18,23 @@
 # - procentowy rozkład typów deklarujemy na starcie
 # - opracujemy algorytm ze stałym rozmiarem maksymalnym populacji
 
+import pygame
+import random
+
+
+pygame.init()
+resolution  = (800, 600)
+window = pygame.display.set_mode(resolution)
+run = True
+listaRezydentow = []
+zadowolenie = 0.5
+
+
+def main():
+    """
+
+    """
+
 
 if __name__ == '__main__':
-    print("Cześć")
+    main()
