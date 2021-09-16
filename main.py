@@ -27,13 +27,45 @@ resolution  = (800, 600)
 window = pygame.display.set_mode(resolution)
 run = True
 listaRezydentow = []
+listaSuperpixeli = []
 zadowolenie = 0.5
+
+
+def koniec():
+    global run
+    run = False
+
+
+def start():
+    pass
+
+
+def stop():
+    pass
+
+
+def losuj():
+    pass
 
 
 def main():
     """
 
     """
+    buttonsTab = []
+
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for p in buttonsTab:
+                    if p.klikPrzycisk():
+                        if p.nazwa == "koniec":
+                            koniec()
+
+    for p in listaSuperpixeli:
+        p.draw(window)
 
 
 if __name__ == '__main__':
