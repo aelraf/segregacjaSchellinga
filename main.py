@@ -14,7 +14,8 @@
 #       - niezadowolony przenosi się na sąsiadujące wolne miejsce
 # - sprawdzamy tak długo, aż każdy jest zadowolony (czyli powstały getta)
 # uwagi:
-# - model upraszcza rzeczywistość, bo każdy rezydent ma indywidualną wartość zadowolenia t, nie przybywa nam rezydentów oraz mamy tylko dwa ich typy
+# - model upraszcza rzeczywistość, bo każdy rezydent ma indywidualną wartość zadowolenia t,
+#       nie przybywa nam rezydentów oraz mamy tylko dwa ich typy
 # - procentowy rozkład typów deklarujemy na starcie
 # - opracujemy algorytm ze stałym rozmiarem maksymalnym populacji
 
@@ -25,7 +26,7 @@ import Przycisk
 import SuperPixel
 
 pygame.init()
-resolution  = (800, 600)
+resolution = (800, 530)
 window = pygame.display.set_mode(resolution)
 run = True
 listaRezydentow = []
@@ -41,14 +42,18 @@ def koniec():
 
 
 def rysuj():
+    print("rysuj()")
     i = 0
     for p in listaRezydentow:
-        if p == 0:
-            listaSuperpixeli[i].zmianaKoloru(255, 255, 255)
-        elif p == 1:
-            listaSuperpixeli[i].zmianaKoloru(255, 0, 0)
-        elif p == 2:
-            listaSuperpixeli[i].zmianaKoloru(0, 0, 255)
+        for k in p:
+            if k == 0:
+                listaSuperpixeli[i].zmianaKoloru((255, 255, 255))
+            elif k == 1:
+                listaSuperpixeli[i].zmianaKoloru((255, 0, 0))
+            elif k == 2:
+                listaSuperpixeli[i].zmianaKoloru((0, 0, 255))
+            i += 1
+        # print("k: {}, i: {}".format(k, i))
 
 
 def start():
@@ -69,6 +74,7 @@ def losuj():
     :return:
     """
     global listaRezydentow
+    print("losuj()")
     for i in range(100):
         for j in range(100):
             los = random.random()
@@ -78,6 +84,7 @@ def losuj():
                 listaRezydentow[i][j] = 1
             else:
                 listaRezydentow[i][j] = 2
+    print(listaRezydentow)
     rysuj()
 
 
@@ -85,11 +92,17 @@ def main():
     """
 
     """
-    global run, listaSuperpixeli
+    global run, listaSuperpixeli, listaRezydentow
     clock = 0
     buttonsTab = []
     p1 = Przycisk.Przycisk(700, 40, "buttons/start")
     buttonsTab.append(p1)
+    p2 = Przycisk.Przycisk(700, 80, "buttons/losuj")
+    buttonsTab.append(p2)
+    p3 = Przycisk.Przycisk(700, 120, "buttons/stop")
+    buttonsTab.append(p3)
+    p4 = Przycisk.Przycisk(700, 160, "buttons/koniec")
+    buttonsTab.append(p4)
 
     x = 10
     y = 10
@@ -124,14 +137,14 @@ def main():
                         elif p.nazwa == "stop":
                             stop()
 
-    window.fill((60, 25, 60))
-    for p in listaSuperpixeli:
-        p.draw(window)
+        window.fill((60, 25, 60))
+        for p in listaSuperpixeli:
+            p.draw(window)
 
-    for p in buttonsTab:
-        p.draw(window)
+        for p in buttonsTab:
+            p.draw(window)
 
-    pygame.display.update()
+        pygame.display.update()
 
 
 if __name__ == '__main__':
