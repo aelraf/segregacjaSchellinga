@@ -48,8 +48,29 @@ def czy_zadowolony(x, y):
     :return: zwracamy True, jeśli procent sąsiadów danego typu jest większy, niż zadowolenie
     False w przeciwnym przypadku.
     """
-
-    return True
+    l_diff = 0
+    if x - 1 >0 and y - 1 > 0 and x + 1 < 100 and y + 1 < 100:
+        
+        if listaRezydentow[x][y] != listaRezydentow[x-1][y-1] and listaRezydentow[x-1][y-1] != 0:
+            l_diff += 1
+        if listaRezydentow[x][y] != listaRezydentow[x-1][y] and listaRezydentow[x-1][y] != 0:
+            l_diff += 1
+        if listaRezydentow[x][y] != listaRezydentow[x-1][y+1] and listaRezydentow[x-1][y+1] != 0:
+            l_diff += 1
+        if listaRezydentow[x][y] != listaRezydentow[x][y-1] and listaRezydentow[x][y-1] != 0:
+            l_diff += 1
+        if listaRezydentow[x][y] != listaRezydentow[x][y+1] and listaRezydentow[x][y+1] != 0:
+            l_diff += 1
+        if listaRezydentow[x][y] != listaRezydentow[x+1][y-1] and listaRezydentow[x+1][y-1] != 0:
+            l_diff += 1
+        if listaRezydentow[x][y] != listaRezydentow[x+1][y] and listaRezydentow[x+1][y] != 0:
+            l_diff += 1
+        if listaRezydentow[x][y] != listaRezydentow[x+1][y+1] and listaRezydentow[x+1][y+1] != 0:
+            l_diff += 1
+    if l_diff/8.0 < zadowolenie:
+        return False
+    else:
+        return True
 
 
 def rysuj():
