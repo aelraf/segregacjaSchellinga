@@ -34,11 +34,22 @@ listaSuperpixeli = []
 zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
+loop = True
 
 
 def koniec():
     global run
     run = False
+
+
+def czy_zadowolony(x, y):
+    """
+    jako parametry dostajemy współrzędne sprawdzanego rezydenta
+    :return: zwracamy True, jeśli procent sąsiadów danego typu jest większy, niż zadowolenie
+    False w przeciwnym przypadku.
+    """
+
+    return True
 
 
 def rysuj():
@@ -57,11 +68,14 @@ def rysuj():
 
 
 def start():
-    pass
+    global loop
+    while loop:
+        pass
 
 
 def stop():
-    pass
+    global loop
+    loop = False
 
 
 def losuj():
