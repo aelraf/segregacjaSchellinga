@@ -88,12 +88,27 @@ def przenies_do_losowego(a, b):
     losujemy = True
 
     while losujemy:
-        x, y = random.randint(0, 100)
+        x = random.randint(0, 99)
+        y = random.randint(0, 99)
         print("{}, {}".format(x, y))
         if listaRezydentow[x][y] == 0:
             listaRezydentow[x][y] = listaRezydentow[a][b]
             listaRezydentow[a][b] = 0
             losujemy = False
+
+
+def zmien_superpiksele():
+    global listaSuperpixeli
+
+    for x in range(100):
+        for y in range(100):
+            sp = listaSuperpixeli[x][y]
+            if listaRezydentow[x][y] == 0:
+                sp.kolor = (255, 255, 255)
+            elif listaRezydentow[x][y] == 1:
+                sp.kolor = (255, 0, 0)
+            elif listaRezydentow[x][y] == 2:
+                sp.kolor = (0, 0, 255)
 
 
 def start():
@@ -108,7 +123,6 @@ def start():
     global loop, lista_niezadowolonych
 
     loop = True
-
     zadowolony = 0
     niezadowolony = 0
     iteracja = 0
@@ -116,8 +130,6 @@ def start():
     while loop:
         for x in range(100):
             for y in range(100):
-                resident = listaRezydentow[x][y]
-            #    print(resident)
                 if czy_zadowolony(x, y):
                     zadowolony += 1
                     lista_niezadowolonych[x][y] = 1
@@ -130,12 +142,11 @@ def start():
             for y in range(100):
                 maruda = lista_niezadowolonych[x][y]
                 if maruda == 0:
-                    #przenosimy go do losowego
+                    przenies_do_losowego(x, y)
+        rysuj()
+        if zadowolony >= 9999:
+            loop = False
 
-
-
-
-        loop = False
     print("koniec metody start()")
 
 
