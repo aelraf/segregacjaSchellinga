@@ -36,6 +36,8 @@ zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
 loop = False
+size_x = 50
+size_y = 50
 
 
 def koniec():
@@ -54,7 +56,7 @@ def czy_zadowolony(x, y):
     l_diff = 0
     if listaRezydentow[x][y] == 0:
         return True
-    if x - 1 >= 0 and y - 1 >= 0 and x + 1 < 100 and y + 1 < 100:
+    if x - 1 >= 0 and y - 1 >= 0 and x + 1 < size_x and y + 1 < size_y:
         for u in range(x-1, x+2):
             for v in range(y-1, y+2):
                 if listaRezydentow[x][y] != listaRezydentow[u][v] and listaRezydentow[u][v] != 0:
@@ -90,8 +92,8 @@ def przenies_do_losowego(a, b):
     losujemy = True
 
     while losujemy:
-        x = random.randint(0, 99)
-        y = random.randint(0, 99)
+        x = random.randint(0, size_x - 1)
+        y = random.randint(0, size_y - 1)
         if listaRezydentow[x][y] == 0:
             listaRezydentow[x][y] = listaRezydentow[a][b]
             listaRezydentow[a][b] = 0
@@ -101,8 +103,8 @@ def przenies_do_losowego(a, b):
 def zmien_superpiksele():
     global listaSuperpixeli
 
-    for x in range(100):
-        for y in range(100):
+    for x in range(size_x):
+        for y in range(size_y):
             sp = listaSuperpixeli[x][y]
             if listaRezydentow[x][y] == 0:
                 sp.kolor = (255, 255, 255)
@@ -128,8 +130,8 @@ def start():
     iteracja = 0
 
     while loop:
-        for x in range(100):
-            for y in range(100):
+        for x in range(size_x):
+            for y in range(size_y):
                 if czy_zadowolony(x, y):
                     zadowolony += 1
                     lista_niezadowolonych[x][y] = 1
@@ -138,8 +140,8 @@ def start():
                     lista_niezadowolonych[x][y] = 0
         print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
         iteracja += 1
-        for x in range(100):
-            for y in range(100):
+        for x in range(size_x):
+            for y in range(size_y):
                 maruda = lista_niezadowolonych[x][y]
                 if maruda == 0:
                     przenies_do_losowego(x, y)
@@ -150,7 +152,7 @@ def start():
                 p.draw(window)
             pygame.display.update()
         print("iteracja: {}".format(iteracja))
-        if zadowolony >= 9999 or iteracja > 150:
+        if zadowolony >= 2500 or iteracja > 150:
             loop = False
         zadowolony = 0
         niezadowolony = 0
@@ -176,8 +178,8 @@ def losuj():
 
     loop = True
     print("losuj()")
-    for i in range(100):
-        for j in range(100):
+    for i in range(size_x):
+        for j in range(size_y):
             los = random.random()
             if los < 1.0/3.0:
                 listaRezydentow[i][j] = 0
@@ -189,9 +191,6 @@ def losuj():
 
 
 def main():
-    """
-
-    """
     global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych
 
     clock = 0
@@ -208,16 +207,16 @@ def main():
     x = 10
     y = 10
 
-    for i in range(100):
-        for j in range(100):
+    for i in range(size_x):
+        for j in range(size_y):
             s_p = SuperPixel.SuperPixel(x, y)
             x += 5
             listaSuperpixeli.append(s_p)
         x = 10
         y += 5
 
-    listaRezydentow = [[0] * 100 for _ in range(100)]
-    lista_niezadowolonych = [[0] * 100 for _ in range(100)]
+    listaRezydentow = [[0] * size_x for _ in range(size_y)]
+    lista_niezadowolonych = [[0] * size_x for _ in range(size_y)]
 
     while run:
         clock += pygame.time.Clock().tick(60)/1000
