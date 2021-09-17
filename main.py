@@ -35,8 +35,8 @@ zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
 loop = False
-size_x = 50
-size_y = 50
+size_x = 100
+size_y = 100
 
 
 def koniec():
@@ -60,7 +60,7 @@ def czy_zadowolony(x, y):
             for v in range(y-1, y+2):
                 if listaRezydentow[x][y] != listaRezydentow[u][v] and listaRezydentow[u][v] != 0:
                     l_diff += 1
-    if l_diff/8.0 < zadowolenie:
+    if l_diff/8.0 > zadowolenie:
     #    print("wartość: {}".format(l_diff/8.0))
         return False
     else:
@@ -257,12 +257,12 @@ def main():
                         przenies_do_losowego(x, y)
             if iteracja % 5 == 0:
                 rysuj()
-                pygame.time.delay(100)
+                pygame.time.delay(50)
                 for p in listaSuperpixeli:
                     p.draw(window)
                 pygame.display.update()
             print("iteracja: {}".format(iteracja))
-            if zadowolony >= 2490:
+            if zadowolony >= size_x*size_y:
                 loop = False
             zadowolony = 0
             niezadowolony = 0
