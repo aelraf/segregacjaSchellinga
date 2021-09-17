@@ -18,12 +18,12 @@
 #       nie przybywa nam rezydentów oraz mamy tylko dwa ich typy
 # - procentowy rozkład typów deklarujemy na starcie
 # - opracujemy algorytm ze stałym rozmiarem maksymalnym populacji
-
+import time
 import pygame
 import random
-
 import Przycisk
 import SuperPixel
+
 
 pygame.init()
 resolution = (800, 530)
@@ -144,6 +144,7 @@ def start():
                 if maruda == 0:
                     przenies_do_losowego(x, y)
         rysuj()
+        time.sleep(0.5)
         if zadowolony >= 9999:
             loop = False
 
