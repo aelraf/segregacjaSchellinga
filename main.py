@@ -18,7 +18,6 @@
 #       nie przybywa nam rezydentów oraz mamy tylko dwa ich typy
 # - procentowy rozkład typów deklarujemy na starcie
 # - opracujemy algorytm ze stałym rozmiarem maksymalnym populacji
-import time
 import pygame
 import random
 import Przycisk
@@ -124,11 +123,12 @@ def start():
     Wypisujemy na ekranie bierzącą wartość zadowolenia oraz numer iteracji.
     """
     global loop, lista_niezadowolonych
-
+    """
     zadowolony = 0
     niezadowolony = 0
-    iteracja = 0
-
+    iteracja = 0"""
+    loop = True
+"""
     while loop:
         for x in range(size_x):
             for y in range(size_y):
@@ -147,16 +147,17 @@ def start():
                     przenies_do_losowego(x, y)
         if iteracja % 5 == 0:
             rysuj()
-            time.sleep(0.25)
+            pygame.time.delay(100)
             for p in listaSuperpixeli:
                 p.draw(window)
             pygame.display.update()
         print("iteracja: {}".format(iteracja))
-        if zadowolony >= 2500 or iteracja > 150:
+        if zadowolony >= 2490:
             loop = False
         zadowolony = 0
         niezadowolony = 0
     print("koniec metody start()")
+     """
 
 
 def stop():
@@ -176,7 +177,7 @@ def losuj():
     """
     global listaRezydentow, loop
 
-    loop = True
+    #loop = True
     print("losuj()")
     for i in range(size_x):
         for j in range(size_y):
@@ -191,7 +192,7 @@ def losuj():
 
 
 def main():
-    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych
+    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych, loop
 
     clock = 0
     buttons_tab = []
@@ -206,6 +207,9 @@ def main():
 
     x = 10
     y = 10
+    iteracja = 0
+    zadowolony = 0
+    niezadowolony = 0
 
     for i in range(size_x):
         for j in range(size_y):
@@ -235,6 +239,33 @@ def main():
                             losuj()
                         elif p.nazwa == "stop":
                             stop()
+        while loop:
+            for x in range(size_x):
+                for y in range(size_y):
+                    if czy_zadowolony(x, y):
+                        zadowolony += 1
+                        lista_niezadowolonych[x][y] = 1
+                    else:
+                        niezadowolony += 1
+                        lista_niezadowolonych[x][y] = 0
+            print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
+            iteracja += 1
+            for x in range(size_x):
+                for y in range(size_y):
+                    maruda = lista_niezadowolonych[x][y]
+                    if maruda == 0:
+                        przenies_do_losowego(x, y)
+            if iteracja % 5 == 0:
+                rysuj()
+                pygame.time.delay(100)
+                for p in listaSuperpixeli:
+                    p.draw(window)
+                pygame.display.update()
+            print("iteracja: {}".format(iteracja))
+            if zadowolony >= 2490:
+                loop = False
+            zadowolony = 0
+            niezadowolony = 0
 
         window.fill((60, 25, 60))
         for p in listaSuperpixeli:
