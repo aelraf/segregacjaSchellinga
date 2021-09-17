@@ -147,7 +147,7 @@ def start():
                     przenies_do_losowego(x, y)
         if iteracja % 5 == 0:
             rysuj()
-            time.sleep(1)
+            time.sleep(0.25)
             for p in listaSuperpixeli:
                 p.draw(window)
             pygame.display.update()
