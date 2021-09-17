@@ -35,7 +35,7 @@ lista_niezadowolonych = []
 zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
-loop = True
+loop = False
 
 
 def koniec():
@@ -49,9 +49,12 @@ def czy_zadowolony(x, y):
     jako parametry dostajemy współrzędne sprawdzanego rezydenta
     :return: zwracamy True, jeśli procent sąsiadów danego typu jest większy, niż zadowolenie
     False w przeciwnym przypadku.
+    jeśli jest pusty, to traktujemy jako zadowolony
     """
     l_diff = 0
-    if x - 1 >0 and y - 1 > 0 and x + 1 < 100 and y + 1 < 100:
+    if listaRezydentow[x][y] == 0:
+        return True
+    if x - 1 >= 0 and y - 1 >= 0 and x + 1 < 100 and y + 1 < 100:
         for u in range(x-1, x+2):
             for v in range(y-1, y+2):
                 if listaRezydentow[x][y] != listaRezydentow[u][v] and listaRezydentow[u][v] != 0:
@@ -75,7 +78,6 @@ def rysuj():
             elif k == 2:
                 listaSuperpixeli[i].zmianaKoloru((0, 0, 255))
             i += 1
-        # print("k: {}, i: {}".format(k, i))
 
 
 def przenies_do_losowego(a, b):
@@ -90,7 +92,6 @@ def przenies_do_losowego(a, b):
     while losujemy:
         x = random.randint(0, 99)
         y = random.randint(0, 99)
-        print("{}, {}".format(x, y))
         if listaRezydentow[x][y] == 0:
             listaRezydentow[x][y] = listaRezydentow[a][b]
             listaRezydentow[a][b] = 0
@@ -122,7 +123,6 @@ def start():
     """
     global loop, lista_niezadowolonych
 
-    loop = True
     zadowolony = 0
     niezadowolony = 0
     iteracja = 0
@@ -143,11 +143,17 @@ def start():
                 maruda = lista_niezadowolonych[x][y]
                 if maruda == 0:
                     przenies_do_losowego(x, y)
-        rysuj()
-        time.sleep(0.5)
-        if zadowolony >= 9999:
+        if iteracja % 5 == 0:
+            rysuj()
+            time.sleep(1)
+            for p in listaSuperpixeli:
+                p.draw(window)
+            pygame.display.update()
+        print("iteracja: {}".format(iteracja))
+        if zadowolony >= 9999 or iteracja > 150:
             loop = False
-
+        zadowolony = 0
+        niezadowolony = 0
     print("koniec metody start()")
 
 
@@ -166,8 +172,9 @@ def losuj():
     0 - wolne miejsce
     :return:
     """
-    global listaRezydentow
+    global listaRezydentow, loop
 
+    loop = True
     print("losuj()")
     for i in range(100):
         for j in range(100):
