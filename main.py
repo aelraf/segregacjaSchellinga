@@ -78,6 +78,24 @@ def rysuj():
         # print("k: {}, i: {}".format(k, i))
 
 
+def przenies_do_losowego(a, b):
+    """
+    metoda dostaje współrzędne rezydenta do przeniesienia, losuje komórkę, jeśli wylosowana jest pusta,
+    to przenosi do niej rezydenta
+    """
+    global listaRezydentow
+
+    losujemy = True
+
+    while losujemy:
+        x, y = random.randint(0, 100)
+        print("{}, {}".format(x, y))
+        if listaRezydentow[x][y] == 0:
+            listaRezydentow[x][y] = listaRezydentow[a][b]
+            listaRezydentow[a][b] = 0
+            losujemy = False
+
+
 def start():
     """
     W pojedyńczej iteracji:
@@ -89,9 +107,12 @@ def start():
     """
     global loop, lista_niezadowolonych
 
+    loop = True
+
     zadowolony = 0
     niezadowolony = 0
     iteracja = 0
+
     while loop:
         for x in range(100):
             for y in range(100):
@@ -105,6 +126,14 @@ def start():
                     lista_niezadowolonych[x][y] = 0
         print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
         iteracja += 1
+        for x in range(100):
+            for y in range(100):
+                maruda = lista_niezadowolonych[x][y]
+                if maruda == 0:
+                    #przenosimy go do losowego
+
+
+
 
         loop = False
     print("koniec metody start()")
@@ -137,7 +166,6 @@ def losuj():
                 listaRezydentow[i][j] = 1
             else:
                 listaRezydentow[i][j] = 2
-#    print(listaRezydentow)
     rysuj()
 
 
@@ -145,7 +173,7 @@ def main():
     """
 
     """
-    global run, listaSuperpixeli, listaRezydentow
+    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych
 
     clock = 0
     buttons_tab = []
@@ -169,9 +197,8 @@ def main():
         x = 10
         y += 5
 
-    n = 100
-    m = 100
-    listaRezydentow = [[0] * m for _ in range(n)]
+    listaRezydentow = [[0] * 100 for _ in range(100)]
+    lista_niezadowolonych = [[0] * 100 for _ in range(100)]
 
     while run:
         clock += pygame.time.Clock().tick(60)/1000
