@@ -68,7 +68,7 @@ def czy_zadowolony(x, y):
             y_p = y
             y_k = y + 1
             boxes = 4
-        if y + 1 == size_y:
+        elif y + 1 == size_y:
             x_p = x
             x_k = x + 1
             y_p = y - 1
@@ -80,14 +80,14 @@ def czy_zadowolony(x, y):
             y_p = y - 1
             y_k = y + 1
             boxes = 6
-    elif x + 1 == size_x:
+    elif x + 1 >= size_x:
         if y - 1 < 0:
             x_p = x - 1
             x_k = x
             y_p = y
             y_k = y + 1
             boxes = 4
-        if y + 1 == size_y:
+        elif y + 1 == size_y:
             x_p = x - 1
             x_k = x
             y_p = y - 1
@@ -99,36 +99,30 @@ def czy_zadowolony(x, y):
             y_p = y - 1
             y_k = y + 1
             boxes = 6
-    elif:
-        
-    if x - 1 >= 0 and y - 1 >= 0 and x + 1 < size_x and y + 1 < size_y:
-        for u in range(x-1, x+2):
-            for v in range(y-1, y+2):
-                if listaRezydentow[x][y] != listaRezydentow[u][v]:
-                    l_diff += 1
+    elif y - 1 < 0:
+        x_p = x - 1
+        x_k = x + 1
+        y_p = y
+        y_k = y + 1
+        boxes = 6
+    elif y + 1 >= size_x:
+        x_p = x - 1
+        x_k = x + 1
+        y_p = y
+        y_k = y - 1
+        boxes = 6
     else:
-        if x - 1 == 0:
-            if y - 1 == 0:
-                for u in range(x, x + 2):
-                    for v in range(y, y + 2):
-                        if listaRezydentow[x][y] != listaRezydentow[u][v]:
-                            l_diff += 1
-                if l_diff/4 > zadowolenie:
-                    return False
-                else:
-                    return True
-            if y + 1 == size_y:
-                for u in range(x, x + 2):
-                    for v in range(y - 1, y + 1):
-                        if listaRezydentow[x][y] != listaRezydentow[u][v]:
-                            l_diff += 1
-                if l_diff/4 > zadowolenie:
-                    return False
-                else:
-                    return True
-        if x + 1 == size_x:
-            pass
-    if l_diff/9.0 > zadowolenie:
+        x_p = x - 1
+        x_k = x + 1
+        y_p = y - 1
+        y_k = y + 1
+        boxes = 9
+
+    for u in range(x_p, x_k):
+        for v in range(y_p, y_k):
+            if listaRezydentow[x][y] != listaRezydentow[u][v]:
+                l_diff += 1
+    if l_diff/boxes > zadowolenie:
         return False
     else:
         return True
