@@ -35,8 +35,8 @@ zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
 loop = False
-size_x = 100
-size_y = 100
+size_x = 10
+size_y = 10
 
 
 def koniec():
@@ -57,79 +57,84 @@ def czy_zadowolony(x, y):
     x_k = 0
     y_p = 0
     y_k = 0
-    boxes = 0
+    boxes = 0.0
+    iterator = 0.0
 
     if listaRezydentow[x][y] == 0:
         return True
     if x - 1 < 0:
         if y - 1 < 0:
+            print("róg lewy górny")
             x_p = x
             x_k = x + 1
             y_p = y
             y_k = y + 1
-            boxes = 4
+            boxes = 4.0
         elif y + 1 == size_y:
+            print("róg lewy dolny")
             x_p = x
             x_k = x + 1
             y_p = y - 1
             y_k = y
-            boxes = 4
+            boxes = 4.0
         else:
             x_p = x
             x_k = x + 1
             y_p = y - 1
             y_k = y + 1
-            boxes = 6
+            boxes = 6.0
     elif x + 1 >= size_x:
         if y - 1 < 0:
+            print("róg prawy górny")
             x_p = x - 1
             x_k = x
             y_p = y
             y_k = y + 1
-            boxes = 4
+            boxes = 4.0
         elif y + 1 == size_y:
+            print("róg lewy dolny")
             x_p = x - 1
             x_k = x
             y_p = y - 1
             y_k = y
-            boxes = 4
+            boxes = 4.0
         else:
             x_p = x - 1
             x_k = x
             y_p = y - 1
             y_k = y + 1
-            boxes = 6
+            boxes = 6.0
     elif y - 1 < 0:
         x_p = x - 1
         x_k = x + 1
         y_p = y
         y_k = y + 1
-        boxes = 6
+        boxes = 6.0
     elif y + 1 >= size_x:
         x_p = x - 1
         x_k = x + 1
-        y_p = y
-        y_k = y - 1
-        boxes = 6
+        y_p = y - 1
+        y_k = y
+        boxes = 6.0
     else:
         x_p = x - 1
         x_k = x + 1
         y_p = y - 1
         y_k = y + 1
-        boxes = 9
+        boxes = 9.0
 
     for u in range(x_p, x_k):
         for v in range(y_p, y_k):
             if listaRezydentow[x][y] != listaRezydentow[u][v]:
                 l_diff += 1
-    if l_diff/boxes > zadowolenie:
+            iterator += 1.0
+    if l_diff/iterator > zadowolenie:
         return False
     else:
         return True
 
 
 def rysuj():
-    print("rysuj()")
     i = 0
     for p in listaRezydentow:
         for k in p:
