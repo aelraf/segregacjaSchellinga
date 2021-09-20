@@ -58,7 +58,9 @@ def czy_zadowolony(x, y):
     if x - 1 >= 0 and y - 1 >= 0 and x + 1 < size_x and y + 1 < size_y:
         for u in range(x-1, x+2):
             for v in range(y-1, y+2):
-                if listaRezydentow[x][y] != listaRezydentow[u][v] and listaRezydentow[u][v] != 0:
+            #    if listaRezydentow[x][y] != listaRezydentow[u][v] and listaRezydentow[u][v] != 0:
+            #        l_diff += 1
+                if listaRezydentow[x][y] != listaRezydentow[u][v]:
                     l_diff += 1
     if l_diff/8.0 > zadowolenie:
     #    print("wartość: {}".format(l_diff/8.0))
