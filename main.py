@@ -35,8 +35,8 @@ zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
 loop = False
-size_x = 10
-size_y = 10
+size_x = 100
+size_y = 100
 
 
 def koniec():
@@ -64,14 +64,12 @@ def czy_zadowolony(x, y):
         return True
     if x - 1 < 0:
         if y - 1 < 0:
-            print("róg lewy górny")
             x_p = x
             x_k = x + 1
             y_p = y
             y_k = y + 1
             boxes = 4.0
         elif y + 1 == size_y:
-            print("róg lewy dolny")
             x_p = x
             x_k = x + 1
             y_p = y - 1
@@ -85,14 +83,12 @@ def czy_zadowolony(x, y):
             boxes = 6.0
     elif x + 1 >= size_x:
         if y - 1 < 0:
-            print("róg prawy górny")
             x_p = x - 1
             x_k = x
             y_p = y
             y_k = y + 1
             boxes = 4.0
         elif y + 1 == size_y:
-            print("róg lewy dolny")
             x_p = x - 1
             x_k = x
             y_p = y - 1
