@@ -35,8 +35,8 @@ zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
 loop = False
-size_x = 30
-size_y = 30
+size_x = 100
+size_y = 100
 
 
 def koniec():
@@ -53,8 +53,33 @@ def czy_zadowolony(x, y):
     jeśli jest pusty, to traktujemy jako zadowolony
     """
     l_diff = 0
+    x_p = 0
+    x_k = 0
+    y_p = 0
+    y_k = 0
+    boxes = 0
+
     if listaRezydentow[x][y] == 0:
         return True
+    if x - 1 == 0:
+        if y - 1 == 0:
+            x_p = x
+            x_k = x + 1
+            y_p = y
+            y_k = y + 1
+            boxes = 4
+        if y + 1 == size_y:
+            x_p = x
+            x_k = x + 1
+            y_p = y - 1
+            y_k = y
+            boxes = 4
+        else:
+            x_p = x
+            x_k = x + 1
+            y_p = y - 1
+            y_k = y
+            boxes = 6
     if x - 1 >= 0 and y - 1 >= 0 and x + 1 < size_x and y + 1 < size_y:
         for u in range(x-1, x+2):
             for v in range(y-1, y+2):
