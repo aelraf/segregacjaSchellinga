@@ -52,13 +52,14 @@ def czy_zadowolony(x, y):
     :return: zwracamy True, jeśli procent sąsiadów danego typu jest większy, niż zadowolenie
     False w przeciwnym przypadku.
     jeśli jest pusty, to traktujemy jako zadowolony
+    najpierw ustalamy punkty współrzędne początku i końca "otoczenia" do przejrzenia, a później przeglądamy
+    po wyliczonym otoczeniu punktu
     """
     l_diff = 0
     x_p = 0
     x_k = 0
     y_p = 0
     y_k = 0
-    boxes = 0.0
     iterator = 0.0
 
     if listaRezydentow[x][y] == 0:
@@ -69,59 +70,50 @@ def czy_zadowolony(x, y):
             x_k = x + 1
             y_p = y
             y_k = y + 1
-            boxes = 4.0
         elif y + 1 == size_y:
             x_p = x
             x_k = x + 1
             y_p = y - 1
             y_k = y
-            boxes = 4.0
         else:
             x_p = x
             x_k = x + 1
             y_p = y - 1
             y_k = y + 1
-            boxes = 6.0
     elif x + 1 >= size_x:
         if y - 1 < 0:
             x_p = x - 1
             x_k = x
             y_p = y
             y_k = y + 1
-            boxes = 4.0
         elif y + 1 == size_y:
             x_p = x - 1
             x_k = x
             y_p = y - 1
             y_k = y
-            boxes = 4.0
         else:
             x_p = x - 1
             x_k = x
             y_p = y - 1
             y_k = y + 1
-            boxes = 6.0
     elif y - 1 < 0:
         x_p = x - 1
         x_k = x + 1
         y_p = y
         y_k = y + 1
-        boxes = 6.0
     elif y + 1 >= size_x:
         x_p = x - 1
         x_k = x + 1
         y_p = y - 1
         y_k = y
-        boxes = 6.0
     else:
         x_p = x - 1
         x_k = x + 1
         y_p = y - 1
         y_k = y + 1
-        boxes = 9.0
 
-    for u in range(x_p, x_k):
-        for v in range(y_p, y_k):
+    for u in range(x_p, x_k + 1):
+        for v in range(y_p, y_k + 1):
             if listaRezydentow[x][y] != listaRezydentow[u][v]:
                 l_diff += 1
             iterator += 1.0
@@ -177,50 +169,9 @@ def zmien_superpiksele():
 
 
 def start():
-    """
-    W pojedyńczej iteracji:
-     1) sprawdzamy, czy dany rezydent jest zadowolony
-     2) tworzymy tablicę zadowolenia rezydentów
-     3) dla niezadowolonych rezydentów przenosimy każdego z nich na dowolne wolne miejsce (losowe)
-    Kończymy, jeśli wszyscy są zadowoleni.
-    Wypisujemy na ekranie bierzącą wartość zadowolenia oraz numer iteracji.
-    """
-    global loop, lista_niezadowolonych
-    """
-    zadowolony = 0
-    niezadowolony = 0
-    iteracja = 0"""
+    global loop
+
     loop = True
-"""
-    while loop:
-        for x in range(size_x):
-            for y in range(size_y):
-                if czy_zadowolony(x, y):
-                    zadowolony += 1
-                    lista_niezadowolonych[x][y] = 1
-                else:
-                    niezadowolony += 1
-                    lista_niezadowolonych[x][y] = 0
-        print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
-        iteracja += 1
-        for x in range(size_x):
-            for y in range(size_y):
-                maruda = lista_niezadowolonych[x][y]
-                if maruda == 0:
-                    przenies_do_losowego(x, y)
-        if iteracja % 5 == 0:
-            rysuj()
-            pygame.time.delay(100)
-            for p in listaSuperpixeli:
-                p.draw(window)
-            pygame.display.update()
-        print("iteracja: {}".format(iteracja))
-        if zadowolony >= 2490:
-            loop = False
-        zadowolony = 0
-        niezadowolony = 0
-    print("koniec metody start()")
-     """
 
 
 def stop():
@@ -273,8 +224,16 @@ def buttons_actions():
                         stop()
 
 
+def text_with_residents():
+    """
+    metoda odpowiada za wyświetlanie rezydentów
+    oraz warunków startowych
+    """
+    text_first = str()
+
+
 def main():
-    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych, loop, buttons_tab
+    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych, loop, buttons_tab, procent_zadowolonych
 
     clock = 0
     p1 = Przycisk.Przycisk(700, 40, "buttons/start")
@@ -305,7 +264,7 @@ def main():
 
     while run:
         clock += pygame.time.Clock().tick(60)/1000
-        
+
         buttons_actions()
 
         while loop:
@@ -319,6 +278,8 @@ def main():
                         niezadowolony += 1
                         lista_niezadowolonych[x][y] = 0
             print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
+            procent_zadowolonych = zadowolony / (size_x * size_y)
+            print(procent_zadowolonych)
             iteracja += 1
             for x in range(size_x):
                 for y in range(size_y):
