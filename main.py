@@ -31,6 +31,7 @@ run = True
 listaRezydentow = []
 listaSuperpixeli = []
 lista_niezadowolonych = []
+buttons_tab = []
 zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
@@ -253,11 +254,29 @@ def losuj():
     rysuj()
 
 
+def buttons_actions():
+    global run
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for p in buttons_tab:
+                if p.klikPrzycisk():
+                    if p.nazwa == "koniec":
+                        koniec()
+                    elif p.nazwa == "start":
+                        start()
+                    elif p.nazwa == "losuj":
+                        losuj()
+                    elif p.nazwa == "stop":
+                        stop()
+
+
 def main():
-    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych, loop
+    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych, loop, buttons_tab
 
     clock = 0
-    buttons_tab = []
     p1 = Przycisk.Przycisk(700, 40, "buttons/start")
     buttons_tab.append(p1)
     p2 = Przycisk.Przycisk(700, 80, "buttons/losuj")
@@ -286,22 +305,11 @@ def main():
 
     while run:
         clock += pygame.time.Clock().tick(60)/1000
+        
+        buttons_actions()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                for p in buttons_tab:
-                    if p.klikPrzycisk():
-                        if p.nazwa == "koniec":
-                            koniec()
-                        elif p.nazwa == "start":
-                            start()
-                        elif p.nazwa == "losuj":
-                            losuj()
-                        elif p.nazwa == "stop":
-                            stop()
         while loop:
+            buttons_actions()
             for x in range(size_x):
                 for y in range(size_y):
                     if czy_zadowolony(x, y):
@@ -328,6 +336,7 @@ def main():
                 loop = False
             zadowolony = 0
             niezadowolony = 0
+        iteracja = 0
 
         window.fill((60, 25, 60))
         for p in listaSuperpixeli:
