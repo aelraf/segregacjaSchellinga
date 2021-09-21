@@ -189,10 +189,11 @@ def losuj():
     0 - wolne miejsce
     :return:
     """
-    global listaRezydentow, loop
+    global listaRezydentow, loop, krok
 
     #loop = True
     print("losuj()")
+    krok = 0
     for i in range(size_x):
         for j in range(size_y):
             los = random.random()
@@ -229,11 +230,43 @@ def text_with_residents():
     metoda odpowiada za wyświetlanie rezydentów
     oraz warunków startowych
     """
-    text_first = str()
+    global window
+
+    text_zadowolenie = str(zadowolenie)
+    text_iteracja = str(krok)
+    text_size_x = str(size_x)
+    text_size_y = str(size_y)
+    text_zadowolonych = str(procent_zadowolonych)
+
+    font = pygame.font.Font('freesansbold.ttf', 15)
+    text1 = font.render("Zadowolenie: {}".format(zadowolenie), True, (0, 255, 0), (0, 0, 128))
+    text2 = font.render("X: {}".format(text_size_x), True, (0, 255, 0), (0, 0, 128))
+    text3 = font.render("Y: {}".format(text_size_y), True, (0, 255, 0), (0, 0, 128))
+    text4 = font.render("% zadowolonych: {}".format(text_zadowolonych), True, (0, 255, 0), (0, 0, 128))
+    text5 = font.render("iteracja: {}".format(text_iteracja), True, (0, 255, 0), (0, 0, 128))
+
+    textRect1 = text1.get_rect()
+    textRect2 = text2.get_rect()
+    textRect3 = text3.get_rect()
+    textRect4 = text4.get_rect()
+    textRect5 = text5.get_rect()
+
+    textRect1.center = (570, 60)
+    textRect2.center = (570, 80)
+    textRect3.center = (570, 100)
+    textRect4.center = (570, 120)
+    textRect5.center = (570, 140)
+
+    window.blit(text1, textRect1)
+    window.blit(text2, textRect2)
+    window.blit(text3, textRect3)
+    window.blit(text4, textRect4)
+    window.blit(text5, textRect5)
 
 
 def main():
     global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych, loop, buttons_tab, procent_zadowolonych
+    global krok
 
     clock = 0
     p1 = Przycisk.Przycisk(700, 40, "buttons/start")
@@ -245,9 +278,10 @@ def main():
     p4 = Przycisk.Przycisk(700, 160, "buttons/koniec")
     buttons_tab.append(p4)
 
+    text_with_residents()
+
     x = 10
     y = 10
-    iteracja = 0
     zadowolony = 0
     niezadowolony = 0
 
@@ -269,6 +303,7 @@ def main():
 
         while loop:
             buttons_actions()
+            text_with_residents()
             for x in range(size_x):
                 for y in range(size_y):
                     if czy_zadowolony(x, y):
@@ -280,24 +315,23 @@ def main():
             print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
             procent_zadowolonych = zadowolony / (size_x * size_y)
             print(procent_zadowolonych)
-            iteracja += 1
+            krok += 1
             for x in range(size_x):
                 for y in range(size_y):
                     maruda = lista_niezadowolonych[x][y]
                     if maruda == 0:
                         przenies_do_losowego(x, y)
-            if iteracja % 5 == 0:
+            if krok % 5 == 0:
                 rysuj()
                 pygame.time.delay(50)
                 for p in listaSuperpixeli:
                     p.draw(window)
                 pygame.display.update()
-            print("iteracja: {}".format(iteracja))
+            print("krok: {}".format(krok))
             if zadowolony >= size_x*size_y:
                 loop = False
             zadowolony = 0
             niezadowolony = 0
-        iteracja = 0
 
         window.fill((60, 25, 60))
         for p in listaSuperpixeli:
