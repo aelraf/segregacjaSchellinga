@@ -232,6 +232,9 @@ def text_with_residents():
     """
     global window
 
+    text_color = (122, 209, 217)
+    bg_color = (60, 25, 60)
+
     text_zadowolenie = str(zadowolenie)
     text_iteracja = str(krok)
     text_size_x = str(size_x)
@@ -239,11 +242,11 @@ def text_with_residents():
     text_zadowolonych = str(procent_zadowolonych)
 
     font = pygame.font.Font('freesansbold.ttf', 15)
-    text1 = font.render("Zadowolenie: {}".format(zadowolenie), True, (0, 255, 0), (0, 0, 128))
-    text2 = font.render("X: {}".format(text_size_x), True, (0, 255, 0), (0, 0, 128))
-    text3 = font.render("Y: {}".format(text_size_y), True, (0, 255, 0), (0, 0, 128))
-    text4 = font.render("% zadowolonych: {}".format(text_zadowolonych), True, (0, 255, 0), (0, 0, 128))
-    text5 = font.render("iteracja: {}".format(text_iteracja), True, (0, 255, 0), (0, 0, 128))
+    text1 = font.render("Zadowolenie: {}".format(zadowolenie), True, text_color, bg_color)
+    text2 = font.render("X: {}".format(text_size_x), True, text_color, bg_color)
+    text3 = font.render("Y: {}".format(text_size_y), True, text_color, bg_color)
+    text4 = font.render("% zadowol.: {}".format(text_zadowolonych), True, text_color, bg_color)
+    text5 = font.render("iteracja: {}".format(text_iteracja), True, text_color, bg_color)
 
     textRect1 = text1.get_rect()
     textRect2 = text2.get_rect()
@@ -251,11 +254,11 @@ def text_with_residents():
     textRect4 = text4.get_rect()
     textRect5 = text5.get_rect()
 
-    textRect1.center = (570, 60)
-    textRect2.center = (570, 80)
-    textRect3.center = (570, 100)
-    textRect4.center = (570, 120)
-    textRect5.center = (570, 140)
+    textRect1.center = (590, 60)
+    textRect2.center = (590, 80)
+    textRect3.center = (590, 100)
+    textRect4.center = (590, 120)
+    textRect5.center = (590, 140)
 
     window.blit(text1, textRect1)
     window.blit(text2, textRect2)
@@ -277,8 +280,6 @@ def main():
     buttons_tab.append(p3)
     p4 = Przycisk.Przycisk(700, 160, "buttons/koniec")
     buttons_tab.append(p4)
-
-    text_with_residents()
 
     x = 10
     y = 10
@@ -313,8 +314,7 @@ def main():
                         niezadowolony += 1
                         lista_niezadowolonych[x][y] = 0
             print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
-            procent_zadowolonych = zadowolony / (size_x * size_y)
-            print(procent_zadowolonych)
+            procent_zadowolonych = zadowolony * 100/ (size_x * size_y)
             krok += 1
             for x in range(size_x):
                 for y in range(size_y):
@@ -334,6 +334,7 @@ def main():
             niezadowolony = 0
 
         window.fill((60, 25, 60))
+        text_with_residents()
         for p in listaSuperpixeli:
             p.draw(window)
 
