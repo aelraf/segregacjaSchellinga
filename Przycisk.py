@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # RafKac
 # 2021_08_27
 # mój stary kod z przed trzech tygodni
