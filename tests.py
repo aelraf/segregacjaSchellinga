@@ -6,6 +6,8 @@ from unittest import TestCase
 
 import pygame
 
+import main
+from main import main
 from Przycisk import Przycisk
 from SuperPixel import SuperPixel
 
@@ -28,12 +30,34 @@ class TestsPrzycisk(TestCase):
 
 class TestsSuperPixel(TestCase):
     def test_klik(self):
-        print()
         super_P = SuperPixel(5, 5)
         super_P.klik()
 
         self.assertEqual(super_P.kolor, (0, 0, 0))
         self.assertNotEqual(super_P.kolor, (255, 255, 255))
+
+    def test_zmianaKoloru(self):
+        super_P = SuperPixel(5, 5)
+        super_P.zmianaKoloru((234, 234, 234))
+
+        self.assertEqual(super_P.kolor, (234, 234, 234))
+        self.assertNotEqual(super_P.kolor, (255, 255, 255))
+
+
+def create_global_listaRezydentow():
+    def helper():
+        tmp = [[[0] * 100] * 100]
+
+        return tmp
+
+    return helper
+
+
+class TestsMain(TestCase):
+    def test_losuj(self):
+        m = main()
+
+        self.assertIsNone(m.run, False)
 
 
 if __name__ == "__main__":
