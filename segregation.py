@@ -18,7 +18,6 @@ class Segregation:
 
         self.listaRezydentow = [[0] * self.size_x for _ in range(self.size_y)]
         self.lista_niezadowolonych = [[0] * self.size_x for _ in range(self.size_y)]
-        self.lista_niezadowolonych = []
 
     def czy_zadowolony(self, x, y):
         """
