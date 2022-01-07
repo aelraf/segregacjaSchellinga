@@ -10,6 +10,7 @@ import main
 from main import main
 from Przycisk import Przycisk
 from SuperPixel import SuperPixel
+from segregation import Segregation
 
 
 def create_key_mock(pressed_key):
@@ -44,7 +45,7 @@ class TestsSuperPixel(TestCase):
         self.assertNotEqual(super_P.kolor, (255, 255, 255))
 
 
-def create_global_listaRezydentow():
+def create_global_lista_rezydentow():
     def helper():
         tmp = [[[0] * 100] * 100]
         return tmp
@@ -52,11 +53,11 @@ def create_global_listaRezydentow():
     return helper
 
 
-class TestsMain(TestCase):
-    def test_losuj(self):
-        m = main()
-
-        self.assertIsNone(m.run, False)
+class TestsSegregation(TestCase):
+    def test_non_empty(self):
+        s = Segregation(5, 5)
+        assert s.listaRezydentow != []
+        assert s.lista_niezadowolonych != []
 
 
 if __name__ == "__main__":

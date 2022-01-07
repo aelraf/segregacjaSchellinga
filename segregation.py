@@ -127,7 +127,6 @@ class Segregation:
         :return:
         """
         print("losuj()")
-        krok = 0
         for i in range(self.size_x):
             for j in range(self.size_y):
                 los = random.random()
