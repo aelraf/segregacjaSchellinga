@@ -59,6 +59,19 @@ class TestsSegregation(TestCase):
         assert s.listaRezydentow != []
         assert s.lista_niezadowolonych != []
 
+        self.assertIn([0, 0, 0, 0, 0], s.lista_niezadowolonych)
+
+    def test_losuj(self):
+        s = Segregation(5, 5)
+        s.losuj()
+
+        assert not s.has(0)
+        assert not s.has(1)
+        assert not s.has(2)
+
+    def test_czy_zadowolony(self):
+        s = Segregation(5, 5)
+
 
 if __name__ == "__main__":
     unittest.main()

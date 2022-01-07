@@ -169,4 +169,8 @@ class Segregation:
                 if maruda == 0:
                     self.przenies_do_losowego(x, y)
 
-
+    def has(self, s):
+        if s in self.listaRezydentow:
+            return True
+        else:
+            return False
