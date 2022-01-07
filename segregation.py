@@ -2,6 +2,7 @@
 # RafKac
 #
 # klasa odpowiedzialna za samą segregację
+import random
 
 
 class Segregation:
@@ -113,3 +114,44 @@ class Segregation:
     def zeroj_niezadowolonych(self):
         self.zadowolony = 0
         self.niezadowolony = 0
+
+    def licz_procent_zadowolonych(self):
+        self.procent_zadowolonych = self.zadowolony * 100 / (self.size_x * self.size_y)
+
+    def losuj(self):
+        """
+        dla listy rezydentów losuje, czy w danym miejscu będzie przedstawiciel pierwszej czy drugiej populacji,
+        czy też wolne miejsce
+        1 - pierwsza populacja
+        2 - druga populacja
+        0 - wolne miejsce
+        :return:
+        """
+        print("losuj()")
+        krok = 0
+        for i in range(self.size_x):
+            for j in range(self.size_y):
+                los = random.random()
+                if los < 1.0 / 3.0:
+                    self.listaRezydentow[i][j] = 0
+                elif 1.0 / 3.0 < los < 2.0 / 3.0:
+                    self.listaRezydentow[i][j] = 1
+                else:
+                    self.listaRezydentow[i][j] = 2
+
+    def przenies_do_losowego(self, a, b):
+        """
+        metoda dostaje współrzędne rezydenta do przeniesienia, losuje komórkę, jeśli wylosowana jest pusta,
+        to przenosi do niej rezydenta
+        """
+        global listaRezydentow
+
+        losujemy = True
+
+        while losujemy:
+            x = random.randint(0, size_x - 1)
+            y = random.randint(0, size_y - 1)
+            if listaRezydentow[x][y] == 0:
+                listaRezydentow[x][y] = listaRezydentow[a][b]
+                listaRezydentow[a][b] = 0
+                losujemy = False

@@ -43,6 +43,8 @@ loop = False
 size_x = 100
 size_y = 100
 
+segregacja = Segregation(100, 100)
+
 
 def koniec():
     global run
@@ -195,7 +197,7 @@ def losuj():
     """
     global listaRezydentow, loop, krok
 
-    #loop = True
+    # loop = True
     print("losuj()")
     krok = 0
     for i in range(size_x):
@@ -207,7 +209,6 @@ def losuj():
                 listaRezydentow[i][j] = 1
             else:
                 listaRezydentow[i][j] = 2
-    rysuj()
 
 
 def buttons_actions():
@@ -225,6 +226,7 @@ def buttons_actions():
                         start()
                     elif p.nazwa == "losuj":
                         losuj()
+                        rysuj(segregacja.listaRezydentow)
                     elif p.nazwa == "stop":
                         stop()
 
@@ -311,7 +313,13 @@ def main():
 
         while loop:
             buttons_actions()
-            text_with_residents()
+            text_with_residents(
+                zadowolenie=segregacja.zadowolenie,
+                krok=segregacja.krok,
+                procent_zadowolonych=segregacja.procent_zadowolonych,
+                size_x=segregacja.size_x,
+                size_y=segregacja.size_y
+            )
             for x in range(size_x):
                 for y in range(size_y):
                     if czy_zadowolony(x, y):
@@ -322,6 +330,7 @@ def main():
                         lista_niezadowolonych[x][y] = 0
             print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
             procent_zadowolonych = zadowolony * 100 / (size_x * size_y)
+            segregacja.licz_procent_zadowolonych()
             krok += 1
             for x in range(size_x):
                 for y in range(size_y):
@@ -329,19 +338,26 @@ def main():
                     if maruda == 0:
                         przenies_do_losowego(x, y)
             if krok % 5 == 0:
-                rysuj()
+                rysuj(segregacja.listaRezydentow)
                 pygame.time.delay(50)
                 for p in listaSuperpixeli:
                     p.draw(window)
                 pygame.display.update()
             print("krok: {}".format(krok))
-            if zadowolony >= size_x*size_y:
+            if segregacja.zadowolony >= segregacja.size_x * segregacja.size_y:
                 loop = False
             zadowolony = 0
             niezadowolony = 0
+            segregacja.zeroj_niezadowolonych()
 
         window.fill((60, 25, 60))
-        text_with_residents()
+        text_with_residents(
+            zadowolenie=segregacja.zadowolenie,
+            krok=segregacja.krok,
+            size_x=segregacja.size_x,
+            size_y=segregacja.size_y,
+            procent_zadowolonych=segregacja.procent_zadowolonych
+        )
         for p in listaSuperpixeli:
             p.draw(window)
 
