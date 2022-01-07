@@ -6,14 +6,18 @@
 
 class Segregation:
     def __init__(self, x, y):
-        self.listaRezydentow = []
-        self.listaSuperpixeli= []
-        self.lista_niezadowolonych = []
         self.zadowolenie = 0.5
         self.krok = 0
         self.procent_zadowolonych = 0.0
         self.size_x = x
         self.size_y = y
+
+        self.zadowolony = 0
+        self.niezadowolony = 0
+
+        self.listaRezydentow = [[0] * self.size_x for _ in range(self.size_y)]
+        self.lista_niezadowolonych = [[0] * self.size_x for _ in range(self.size_y)]
+        self.lista_niezadowolonych = []
 
     def czy_zadowolony(self, x, y):
         """
@@ -90,3 +94,22 @@ class Segregation:
             return False
         else:
             return True
+
+    def sprawdzanie_zadowolenia(self):
+        """
+        Zliczamy zadowolonych i niezadowolonych oraz dodajemy odpowiednie wartości do lista_niezadowolonych:
+        0 - niezadowolony
+        1 - zadowolony
+        """
+        for x in range(self.size_x):
+            for y in range(self.size_y):
+                if self.czy_zadowolony(x, y):
+                    self.zadowolony += 1
+                    self.lista_niezadowolonych[x][y] = 1
+                else:
+                    self.niezadowolony += 1
+                    self.lista_niezadowolonych[x][y] = 0
+
+    def zeroj_niezadowolonych(self):
+        self.zadowolony = 0
+        self.niezadowolony = 0

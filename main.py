@@ -22,7 +22,7 @@ import pygame
 import random
 import Przycisk
 import SuperPixel
-
+from segregation import Segregation
 
 pygame.init()
 resolution = (800, 530)
@@ -127,9 +127,9 @@ def czy_zadowolony(x, y):
         return True
 
 
-def rysuj():
+def rysuj(lista_rezydentow):
     i = 0
-    for p in listaRezydentow:
+    for p in lista_rezydentow:
         for k in p:
             if k == 0:
                 listaSuperpixeli[i].zmianaKoloru((255, 255, 255))
@@ -229,7 +229,7 @@ def buttons_actions():
                         stop()
 
 
-def text_with_residents():
+def text_with_residents(zadowolenie, krok, size_x, size_y, procent_zadowolonych):
     """
     metoda odpowiada za wyświetlanie rezydentów
     oraz warunków startowych
@@ -246,7 +246,7 @@ def text_with_residents():
     text_zadowolonych = str(procent_zadowolonych)
 
     font = pygame.font.Font('freesansbold.ttf', 15)
-    text1 = font.render("Zadowolenie: {}".format(zadowolenie), True, text_color, bg_color)
+    text1 = font.render("Zadowolenie: {}".format(text_zadowolenie), True, text_color, bg_color)
     text2 = font.render("X: {}".format(text_size_x), True, text_color, bg_color)
     text3 = font.render("Y: {}".format(text_size_y), True, text_color, bg_color)
     text4 = font.render("% zadowol.: {}".format(text_zadowolonych), True, text_color, bg_color)
@@ -272,7 +272,8 @@ def text_with_residents():
 
 
 def main():
-    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych, loop, buttons_tab, procent_zadowolonych
+    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych
+    global loop, buttons_tab, procent_zadowolonych
     global krok
 
     clock = 0
@@ -284,6 +285,8 @@ def main():
     buttons_tab.append(p3)
     p4 = Przycisk.Przycisk(700, 160, "buttons/koniec")
     buttons_tab.append(p4)
+
+    segregacja = Segregation(10, 10)
 
     x = 10
     y = 10
@@ -318,7 +321,7 @@ def main():
                         niezadowolony += 1
                         lista_niezadowolonych[x][y] = 0
             print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
-            procent_zadowolonych = zadowolony * 100/ (size_x * size_y)
+            procent_zadowolonych = zadowolony * 100 / (size_x * size_y)
             krok += 1
             for x in range(size_x):
                 for y in range(size_y):
