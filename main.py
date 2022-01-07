@@ -225,7 +225,7 @@ def buttons_actions():
                     elif p.nazwa == "start":
                         start()
                     elif p.nazwa == "losuj":
-                        losuj()
+                        segregacja.losuj()
                         rysuj(segregacja.listaRezydentow)
                     elif p.nazwa == "stop":
                         stop()
@@ -274,9 +274,9 @@ def text_with_residents(zadowolenie, krok, size_x, size_y, procent_zadowolonych)
 
 
 def main():
-    global run, listaSuperpixeli, listaRezydentow, lista_niezadowolonych
-    global loop, buttons_tab, procent_zadowolonych
-    global krok
+    global listaSuperpixeli, listaRezydentow, lista_niezadowolonych
+    global buttons_tab, procent_zadowolonych
+    global run, loop, krok
 
     clock = 0
     p1 = Przycisk.Przycisk(700, 40, "buttons/start")
@@ -328,16 +328,21 @@ def main():
                     else:
                         niezadowolony += 1
                         lista_niezadowolonych[x][y] = 0
-            print("Zadowolonych: {}, niezadowolonych: {}".format(zadowolony, niezadowolony))
+            segregacja.dodaj_do_listy_niezadowolonych()
+
+            print("Zadowolonych: {}, niezadowolonych: {}".format(segregacja.zadowolony, segregacja.niezadowolony))
             procent_zadowolonych = zadowolony * 100 / (size_x * size_y)
             segregacja.licz_procent_zadowolonych()
             krok += 1
+            segregacja.krok += 1
             for x in range(size_x):
                 for y in range(size_y):
                     maruda = lista_niezadowolonych[x][y]
                     if maruda == 0:
                         przenies_do_losowego(x, y)
-            if krok % 5 == 0:
+            segregacja.losowe_przenoszenie_niezadowolonych()
+
+            if segregacja.krok % 5 == 0:
                 rysuj(segregacja.listaRezydentow)
                 pygame.time.delay(50)
                 for p in listaSuperpixeli:

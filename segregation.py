@@ -144,14 +144,31 @@ class Segregation:
         metoda dostaje współrzędne rezydenta do przeniesienia, losuje komórkę, jeśli wylosowana jest pusta,
         to przenosi do niej rezydenta
         """
-        global listaRezydentow
+        los = True
 
-        losujemy = True
+        while los:
+            x = random.randint(0, self.size_x - 1)
+            y = random.randint(0, self.size_y - 1)
+            if self.listaRezydentow[x][y] == 0:
+                self.listaRezydentow[x][y] = self.listaRezydentow[a][b]
+                self.listaRezydentow[a][b] = 0
+                los = False
 
-        while losujemy:
-            x = random.randint(0, size_x - 1)
-            y = random.randint(0, size_y - 1)
-            if listaRezydentow[x][y] == 0:
-                listaRezydentow[x][y] = listaRezydentow[a][b]
-                listaRezydentow[a][b] = 0
-                losujemy = False
+    def dodaj_do_listy_niezadowolonych(self):
+        for x in range(self.size_x):
+            for y in range(self.size_y):
+                if self.czy_zadowolony(x, y):
+                    self.zadowolony += 1
+                    self.lista_niezadowolonych[x][y] = 1
+                else:
+                    self.niezadowolony += 1
+                    self.lista_niezadowolonych[x][y] = 0
+
+    def losowe_przenoszenie_niezadowolonych(self):
+        for x in range(self.size_x):
+            for y in range(self.size_y):
+                maruda = self.lista_niezadowolonych[x][y]
+                if maruda == 0:
+                    self.przenies_do_losowego(x, y)
+
+
