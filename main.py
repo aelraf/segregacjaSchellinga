@@ -28,13 +28,17 @@ pygame.init()
 resolution = (800, 530)
 window = pygame.display.set_mode(resolution)
 run = True
+
 listaRezydentow = []
 listaSuperpixeli = []
 lista_niezadowolonych = []
+
 buttons_tab = []
+
 zadowolenie = 0.5
 krok = 0
 procent_zadowolonych = 0.0
+
 loop = False
 size_x = 100
 size_y = 100

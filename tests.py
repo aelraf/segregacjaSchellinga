@@ -47,7 +47,6 @@ class TestsSuperPixel(TestCase):
 def create_global_listaRezydentow():
     def helper():
         tmp = [[[0] * 100] * 100]
-
         return tmp
 
     return helper
